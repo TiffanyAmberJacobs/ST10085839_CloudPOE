@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ST10085839_CLDV6211_Part2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AvailabilityLookup">
+          <Key>
+            <PropertyRef Name="AvailabilityID" />
+          </Key>
+          <Property Name="AvailabilityID" Type="int" Nullable="false" />
+          <Property Name="AvailabilityStatus" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CarMake" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Model" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="BodyType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="KilometresTraveled" Type="int" Nullable="false" />
+          <Property Name="ServiceKilometres" Type="int" Nullable="false" />
+          <Property Name="Available" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CarNo" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CarMakeLookup">
+          <Key>
+            <PropertyRef Name="CarMakeID" />
+          </Key>
+          <Property Name="CarMakeID" Type="int" Nullable="false" />
+          <Property Name="CarMake" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="DriverID" />
+          </Key>
+          <Property Name="DriverID" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="100" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="Mobile" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Inspector">
+          <Key>
+            <PropertyRef Name="Inspector_no" />
+          </Key>
+          <Property Name="Inspector_no" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Mobile" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ModelLookup">
+          <Key>
+            <PropertyRef Name="ModelID" />
+          </Key>
+          <Property Name="ModelID" Type="int" Nullable="false" />
+          <Property Name="ModelName" Type="varchar" MaxLength="50" />
+          <Property Name="CarMakeID" Type="int" />
+        </EntityType>
+        <EntityType Name="Rental">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CarNo" Type="varchar" MaxLength="10" />
+          <Property Name="DriverID" Type="varchar" MaxLength="100" />
+          <Property Name="Inspector_no" Type="varchar" MaxLength="10" />
+          <Property Name="RentalFee" Type="decimal" Precision="10" Scale="0" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReturnID">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CarNo" Type="varchar" MaxLength="10" />
+          <Property Name="Inspector_no" Type="int" />
+          <Property Name="DriverID" Type="int" />
+          <Property Name="ReturnDate" Type="date" />
+          <Property Name="ElapsedDate" Type="date" />
+          <Property Name="Fine" Type="int" />
+          <Property Name="ID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Rental__DriverID__6A30C649">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="0..1" />
+          <End Role="Rental" Type="Self.Rental" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="DriverID" />
+            </Principal>
+            <Dependent Role="Rental">
+              <PropertyRef Name="DriverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Rental__Inspecto__6B24EA82">
+          <End Role="Inspector" Type="Self.Inspector" Multiplicity="0..1" />
+          <End Role="Rental" Type="Self.Rental" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inspector">
+              <PropertyRef Name="Inspector_no" />
+            </Principal>
+            <Dependent Role="Rental">
+              <PropertyRef Name="Inspector_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CarMakeID">
+          <End Role="CarMakeLookup" Type="Self.CarMakeLookup" Multiplicity="0..1" />
+          <End Role="ModelLookup" Type="Self.ModelLookup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarMakeLookup">
+              <PropertyRef Name="CarMakeID" />
+            </Principal>
+            <Dependent Role="ModelLookup">
+              <PropertyRef Name="CarMakeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ST10085839_CLDV6211_Part2ModelStoreContainer">
+          <EntitySet Name="AvailabilityLookup" EntityType="Self.AvailabilityLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Car" EntityType="Self.Car" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CarMakeLookup" EntityType="Self.CarMakeLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Driver" EntityType="Self.Driver" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Inspector" EntityType="Self.Inspector" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ModelLookup" EntityType="Self.ModelLookup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rental" EntityType="Self.Rental" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReturnID" EntityType="Self.ReturnID" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Rental__DriverID__6A30C649" Association="Self.FK__Rental__DriverID__6A30C649">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="Rental" EntitySet="Rental" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Rental__Inspecto__6B24EA82" Association="Self.FK__Rental__Inspecto__6B24EA82">
+            <End Role="Inspector" EntitySet="Inspector" />
+            <End Role="Rental" EntitySet="Rental" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CarMakeID" Association="Self.fk_CarMakeID">
+            <End Role="CarMakeLookup" EntitySet="CarMakeLookup" />
+            <End Role="ModelLookup" EntitySet="ModelLookup" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ST10085839_CLDV6211_Part2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AvailabilityLookup">
+          <Key>
+            <PropertyRef Name="AvailabilityID" />
+          </Key>
+          <Property Name="AvailabilityID" Type="Int32" Nullable="false" />
+          <Property Name="AvailabilityStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CarMake" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Model" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BodyType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="KilometresTraveled" Type="Int32" Nullable="false" />
+          <Property Name="ServiceKilometres" Type="Int32" Nullable="false" />
+          <Property Name="Available" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CarNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CarMakeLookup">
+          <Key>
+            <PropertyRef Name="CarMakeID" />
+          </Key>
+          <Property Name="CarMakeID" Type="Int32" Nullable="false" />
+          <Property Name="CarMake" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ModelLookups" Relationship="Self.fk_CarMakeID" FromRole="CarMakeLookup" ToRole="ModelLookup" />
+        </EntityType>
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="DriverID" />
+          </Key>
+          <Property Name="DriverID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Rentals" Relationship="Self.FK__Rental__DriverID__6A30C649" FromRole="Driver" ToRole="Rental" />
+        </EntityType>
+        <EntityType Name="Inspector">
+          <Key>
+            <PropertyRef Name="Inspector_no" />
+          </Key>
+          <Property Name="Inspector_no" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Rentals" Relationship="Self.FK__Rental__Inspecto__6B24EA82" FromRole="Inspector" ToRole="Rental" />
+        </EntityType>
+        <EntityType Name="ModelLookup">
+          <Key>
+            <PropertyRef Name="ModelID" />
+          </Key>
+          <Property Name="ModelID" Type="Int32" Nullable="false" />
+          <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CarMakeID" Type="Int32" />
+          <NavigationProperty Name="CarMakeLookup" Relationship="Self.fk_CarMakeID" FromRole="ModelLookup" ToRole="CarMakeLookup" />
+        </EntityType>
+        <EntityType Name="Rental">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CarNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DriverID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Inspector_no" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RentalFee" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Driver" Relationship="Self.FK__Rental__DriverID__6A30C649" FromRole="Rental" ToRole="Driver" />
+          <NavigationProperty Name="Inspector" Relationship="Self.FK__Rental__Inspecto__6B24EA82" FromRole="Rental" ToRole="Inspector" />
+        </EntityType>
+        <EntityType Name="ReturnID">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CarNo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Inspector_no" Type="Int32" />
+          <Property Name="DriverID" Type="Int32" />
+          <Property Name="ReturnDate" Type="DateTime" Precision="0" />
+          <Property Name="ElapsedDate" Type="DateTime" Precision="0" />
+          <Property Name="Fine" Type="Int32" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_CarMakeID">
+          <End Role="CarMakeLookup" Type="Self.CarMakeLookup" Multiplicity="0..1" />
+          <End Role="ModelLookup" Type="Self.ModelLookup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CarMakeLookup">
+              <PropertyRef Name="CarMakeID" />
+            </Principal>
+            <Dependent Role="ModelLookup">
+              <PropertyRef Name="CarMakeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Rental__DriverID__6A30C649">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="0..1" />
+          <End Role="Rental" Type="Self.Rental" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="DriverID" />
+            </Principal>
+            <Dependent Role="Rental">
+              <PropertyRef Name="DriverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Rental__Inspecto__6B24EA82">
+          <End Role="Inspector" Type="Self.Inspector" Multiplicity="0..1" />
+          <End Role="Rental" Type="Self.Rental" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Inspector">
+              <PropertyRef Name="Inspector_no" />
+            </Principal>
+            <Dependent Role="Rental">
+              <PropertyRef Name="Inspector_no" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ST10085839_CLDV6211_Part2Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AvailabilityLookups" EntityType="Self.AvailabilityLookup" />
+          <EntitySet Name="Cars" EntityType="Self.Car" />
+          <EntitySet Name="CarMakeLookups" EntityType="Self.CarMakeLookup" />
+          <EntitySet Name="Drivers" EntityType="Self.Driver" />
+          <EntitySet Name="Inspectors" EntityType="Self.Inspector" />
+          <EntitySet Name="ModelLookups" EntityType="Self.ModelLookup" />
+          <EntitySet Name="Rentals" EntityType="Self.Rental" />
+          <EntitySet Name="ReturnIDs" EntityType="Self.ReturnID" />
+          <AssociationSet Name="fk_CarMakeID" Association="Self.fk_CarMakeID">
+            <End Role="CarMakeLookup" EntitySet="CarMakeLookups" />
+            <End Role="ModelLookup" EntitySet="ModelLookups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Rental__DriverID__6A30C649" Association="Self.FK__Rental__DriverID__6A30C649">
+            <End Role="Driver" EntitySet="Drivers" />
+            <End Role="Rental" EntitySet="Rentals" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Rental__Inspecto__6B24EA82" Association="Self.FK__Rental__Inspecto__6B24EA82">
+            <End Role="Inspector" EntitySet="Inspectors" />
+            <End Role="Rental" EntitySet="Rentals" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ST10085839_CLDV6211_Part2ModelStoreContainer" CdmEntityContainer="ST10085839_CLDV6211_Part2Entities">
+          <EntitySetMapping Name="AvailabilityLookups">
+            <EntityTypeMapping TypeName="ST10085839_CLDV6211_Part2Model.AvailabilityLookup">
+              <MappingFragment StoreEntitySet="AvailabilityLookup">
+                <ScalarProperty Name="AvailabilityID" ColumnName="AvailabilityID" />
+                <ScalarProperty Name="AvailabilityStatus" ColumnName="AvailabilityStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cars">
+            <EntityTypeMapping TypeName="ST10085839_CLDV6211_Part2Model.Car">
+              <MappingFragment StoreEntitySet="Car">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CarMake" ColumnName="CarMake" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="BodyType" ColumnName="BodyType" />
+                <ScalarProperty Name="KilometresTraveled" ColumnName="KilometresTraveled" />
+                <ScalarProperty Name="ServiceKilometres" ColumnName="ServiceKilometres" />
+                <ScalarProperty Name="Available" ColumnName="Available" />
+                <ScalarProperty Name="CarNo" ColumnName="CarNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CarMakeLookups">
+            <EntityTypeMapping TypeName="ST10085839_CLDV6211_Part2Model.CarMakeLookup">
+              <MappingFragment StoreEntitySet="CarMakeLookup">
+                <ScalarProperty Name="CarMakeID" ColumnName="CarMakeID" />
+                <ScalarProperty Name="CarMake" ColumnName="CarMake" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Drivers">
+            <EntityTypeMapping TypeName="ST10085839_CLDV6211_Part2Model.Driver">
+              <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Inspectors">
+            <EntityTypeMapping TypeName="ST10085839_CLDV6211_Part2Model.Inspector">
+              <MappingFragment StoreEntitySet="Inspector">
+                <ScalarProperty Name="Inspector_no" ColumnName="Inspector_no" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ModelLookups">
+            <EntityTypeMapping TypeName="ST10085839_CLDV6211_Part2Model.ModelLookup">
+              <MappingFragment StoreEntitySet="ModelLookup">
+                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="CarMakeID" ColumnName="CarMakeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rentals">
+            <EntityTypeMapping TypeName="ST10085839_CLDV6211_Part2Model.Rental">
+              <MappingFragment StoreEntitySet="Rental">
+                <ScalarProperty Name="CarNo" ColumnName="CarNo" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="Inspector_no" ColumnName="Inspector_no" />
+                <ScalarProperty Name="RentalFee" ColumnName="RentalFee" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReturnIDs">
+            <EntityTypeMapping TypeName="ST10085839_CLDV6211_Part2Model.ReturnID">
+              <MappingFragment StoreEntitySet="ReturnID">
+                <ScalarProperty Name="CarNo" ColumnName="CarNo" />
+                <ScalarProperty Name="Inspector_no" ColumnName="Inspector_no" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
+                <ScalarProperty Name="ElapsedDate" ColumnName="ElapsedDate" />
+                <ScalarProperty Name="Fine" ColumnName="Fine" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
